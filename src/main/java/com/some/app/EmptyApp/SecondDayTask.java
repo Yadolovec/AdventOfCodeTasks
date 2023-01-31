@@ -9,14 +9,14 @@ public class SecondDayTask {
 
     public static void main(String[] args) {
         List<Integer> list = Utils.getListFromText("src/main/resources/FirstDay.txt");
-        int i = Collections.max(list);
-        list.remove(Collections.max(list));
+        int sum = 0;
 
-        i+=Collections.max(list);
-        list.remove(Collections.max(list));
+        for (int i = 0; i<3; i++){
+            Integer max = Collections.max(list);
+            sum+=max;
+            list.remove(max);
+        }
 
-        i+=Collections.max(list);
-
-        System.out.println(i);
+        System.out.println(sum);
     }
 }
