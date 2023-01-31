@@ -15,6 +15,7 @@ public class FirstDayTask {
 	public static void main(String[] args) throws IOException {
 		List<Integer> list = Utils.getListFromText("src/main/resources/FirstDay.txt");
 		System.out.println(Collections.max(list));
+
 	}
 
 }
