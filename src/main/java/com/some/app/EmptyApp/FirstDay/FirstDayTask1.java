@@ -1,4 +1,4 @@
-package com.some.app.EmptyApp;
+package com.some.app.EmptyApp.FirstDay;
 
 import com.some.app.EmptyApp.util.Utils;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SpringBootApplication
-public class FirstDayTask {
+public class FirstDayTask1 {
 
 
 
