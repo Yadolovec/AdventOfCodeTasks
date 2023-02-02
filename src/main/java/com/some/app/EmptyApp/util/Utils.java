@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-    public static List<Integer> getListFromText(String pathToFile){
+    //FOR DAY ONE
+    public static List<Integer> getListFromTextAndAddCalories(String pathToFile){
         List<Integer> list = new ArrayList<>();
         list.add(0);
         try {
@@ -25,6 +26,19 @@ public class Utils {
             e.printStackTrace();
         }
         return list;
+    }
 
+    public static List<String> getListFromText(String pathToFile){
+        List<String> list = new ArrayList<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(pathToFile));
+            String s;
+            while ((s = br.readLine())!=null) {
+                list.add(s);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return list;
     }
 }

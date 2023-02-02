@@ -8,7 +8,7 @@ import java.util.List;
 public class FirstDayTask2 {
 
     public static void main(String[] args) {
-        List<Integer> list = Utils.getListFromText("src/main/resources/FirstDay.txt");
+        List<Integer> list = Utils.getListFromTextAndAddCalories("src/main/resources/FirstDay.txt");
         int sum = 0;
 
         for (int i = 0; i<3; i++){

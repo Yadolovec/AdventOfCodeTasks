@@ -13,7 +13,7 @@ public class FirstDayTask1 {
 
 
 	public static void main(String[] args) throws IOException {
-		List<Integer> list = Utils.getListFromText("src/main/resources/FirstDay.txt");
+		List<Integer> list = Utils.getListFromTextAndAddCalories("src/main/resources/FirstDay.txt");
 		System.out.println(Collections.max(list));
 
 	}
