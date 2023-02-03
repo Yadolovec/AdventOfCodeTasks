@@ -19,7 +19,6 @@ public class ThirdDayTask2 {
         Set<Character> set3;
         Set<Character> set;
         int points = 0;
-//        int i = 3;
 
         for (int i = 0; i<list.size(); i+=3) {
             charArray1 = Utils.toCharacterArray(list.get(i).toCharArray());
@@ -29,21 +28,9 @@ public class ThirdDayTask2 {
             set1 = Arrays.stream(charArray1).collect(Collectors.toSet());
             set2 = Arrays.stream(charArray2).collect(Collectors.toSet());
             set3 = Arrays.stream(charArray3).collect(Collectors.toSet());
-            set = new HashSet<>(set1);
 
-            set1.removeAll(set2);
-            set.removeAll(set1);
-
-//            System.out.println(set);
-
-            set1 = new HashSet<>(set);
-            set2 = new HashSet<>(set3);
-
-            set1.removeAll(set2);
-            set.removeAll(set1);
-
-//            System.out.println(set);
-
+            set = Utils.getIntersection(set1, set2);
+            set = Utils.getIntersection(set, set3);
 
             points+=Utils.getLetterPriority((char) set.toArray()[0]);
 

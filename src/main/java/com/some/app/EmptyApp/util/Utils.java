@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Utils {
     public static List<String> getListFromText(String pathToFile){
@@ -71,7 +72,12 @@ public class Utils {
         return toReturn;
     }
 
-//    public static HashSet<? extends Object> setIntersection(HashSet<>){}
+    public static <T> HashSet<T> getIntersection(Set<T> set1, Set<T> set2){
+        HashSet<T> set = new HashSet<>(set1);
+        set1.removeAll(set2);
+        set.removeAll(set1);
+        return set;
+    }
 
 
 }
