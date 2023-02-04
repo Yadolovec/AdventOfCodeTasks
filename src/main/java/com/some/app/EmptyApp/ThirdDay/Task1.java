@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ThirdDayTask1 {
+public class Task1 {
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/ThirdDay.txt");
         String[] halfs;

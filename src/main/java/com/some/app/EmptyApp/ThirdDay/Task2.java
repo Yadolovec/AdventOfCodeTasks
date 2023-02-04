@@ -3,12 +3,11 @@ package com.some.app.EmptyApp.ThirdDay;
 import com.some.app.EmptyApp.util.Utils;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ThirdDayTask2 {
+public class Task2 {
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/ThirdDay.txt");
         Character[] charArray1;

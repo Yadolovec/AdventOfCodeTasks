@@ -4,7 +4,7 @@ import com.some.app.EmptyApp.util.Utils;
 
 import java.util.List;
 
-public class SecondDayTask2 {
+public class Task2 {
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/SecondDay.txt");
         int points = 0;

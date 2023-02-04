@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.List;
 
 @SpringBootApplication
-public class FirstDayTask1 {
+public class Task1 {
 
 
 
