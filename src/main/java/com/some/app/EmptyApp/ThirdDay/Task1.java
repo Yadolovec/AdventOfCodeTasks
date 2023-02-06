@@ -31,7 +31,7 @@ public class Task1 {
             set1.removeAll(set2);
             set.removeAll(set1);
 
-            points+=Utils.getLetterPriority((char) set.toArray()[0]);
+            points += Utils.getLetterPriority((char) set.toArray()[0]);
 
         }
         System.out.println(points);
