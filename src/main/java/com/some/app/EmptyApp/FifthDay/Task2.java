@@ -5,7 +5,7 @@ import com.some.app.EmptyApp.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task1 {
+public class Task2 {
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/FifthDay.txt");
 
@@ -22,7 +22,7 @@ public class Task1 {
         showCrates(cratesTable);
 
         for (int[] instr : instruction){
-            cratesTable = moveAsInstructionSaid(cratesTable, instr);
+            moveAsInstructionSaid(cratesTable, instr);
         }
 
 
@@ -37,10 +37,18 @@ public class Task1 {
         int from = instruction[1];
         int to = instruction[2];
 
+        int workPointFrom = indexOfTop(cratesTable, from) - quantity + 1;
+        int workPointTo = indexOfTop(cratesTable, to)+1;
+
         for (int i = 0; i < quantity; i++){
-            cratesTable[indexOfTop(cratesTable, to)+1][to]=cratesTable[indexOfTop(cratesTable, from)][from];
-            cratesTable[indexOfTop(cratesTable, from)][from]=' ';
+
+            cratesTable[workPointTo][to]=cratesTable[workPointFrom][from];
+            cratesTable[workPointFrom][from]=' ';
+
+            workPointFrom++;
+            workPointTo++;
         }
+
         return cratesTable;
 
     }
@@ -116,9 +124,9 @@ public class Task1 {
 
         for (int i = instructionStart; i < list.size(); i++) {
             s = list.get(i).substring(5);
-                sArray = s.split(" from ");
+            sArray = s.split(" from ");
             instruction[high][0] = Integer.parseInt(sArray[0]);
-                sArray = sArray[1].split(" to ");
+            sArray = sArray[1].split(" to ");
             instruction[high][1] = Integer.parseInt(sArray[0])-1;
             instruction[high][2] = Integer.parseInt(sArray[1])-1;
             high++;
