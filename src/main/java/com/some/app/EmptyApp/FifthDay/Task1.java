@@ -5,7 +5,7 @@ import com.some.app.EmptyApp.util.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task1 {
+public class Task1 {  
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/FifthDay.txt");
 
