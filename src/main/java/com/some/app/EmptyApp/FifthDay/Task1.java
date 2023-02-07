@@ -9,6 +9,7 @@ public class Task1 {
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/Test/Data5");
         List<String> crates = new ArrayList<>();
+
         List<int[]> instruction = new ArrayList<>();
         String[] sArray;
 
@@ -21,7 +22,7 @@ public class Task1 {
             crates.add(list.get(i));
         }
 
-        for (int i = 0; i < highOfStack; i++){
+        for (int i = 0; i < highOfStack; i++) {
             System.out.println(crates.get(i));
         }
 
@@ -29,6 +30,7 @@ public class Task1 {
 
         String s = list.get(instructionStart);
         int numberOfStacks = Integer.parseInt(s.substring((s.length() - 1), (s.length())));
+        System.out.println("number " + numberOfStacks);
 
         instructionStart += 2;
 
@@ -36,16 +38,31 @@ public class Task1 {
         for (int i = instructionStart; i < list.size(); i++) {
             s = list.get(i).substring(5);
 
-                sArray = s.split(" from ");
+            sArray = s.split(" from ");
             array[0] = Integer.parseInt(sArray[0]);
-                sArray = sArray[1].split(" to ");
+            sArray = sArray[1].split(" to ");
             array[1] = Integer.parseInt(sArray[0]);
             array[2] = Integer.parseInt(sArray[1]);
-            System.out.println(array[0]+" " + array[1] + " " + array[2]);
+            System.out.println(array[0] + " " + array[1] + " " + array[2]);
 
             instruction.add(array);
         }
 
+        Character[][] cratesTable = new Character[highOfStack][numberOfStacks];
+
+
+        for (int i = 0; i < highOfStack; i++) {
+            s = list.get(i);
+            for (int j = 0; j < numberOfStacks; j++) {
+                int characterNumber = j*4+1; //find it by empyric
+                if (characterNumber<s.length()){
+                    cratesTable[i][j]=s.charAt(characterNumber);
+                } else {
+                    cratesTable[i][j]=' ';
+                }
+            }
+        }
+        
 
     }
 }
