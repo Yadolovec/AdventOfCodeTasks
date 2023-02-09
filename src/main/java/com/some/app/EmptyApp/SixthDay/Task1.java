@@ -10,19 +10,20 @@ public class Task1 {
     public static void main(String[] args) {
         List<String> s = Utils.getListFromText("src/main/resources/SixthDay.txt");
         Set<Character> charSet = new HashSet<>();
+        int quantityOfUniques = 4;
 
-        int i = -1;
+        int i = 0;
         while (true){
-            i++;
-            if (charSet.size()==4){
-                System.out.println(i+3);
+            if (charSet.size()==quantityOfUniques){
+                System.out.println(i+quantityOfUniques-1);
                 break;
             }
             charSet.clear();
-            for (int j = i; j<i+4; j++){
+            for (int j = i; j<i+quantityOfUniques; j++){
                 charSet.add(s.get(0).charAt(j));
             }
             System.out.println(charSet);
+            i++;
         }
 
 
