@@ -8,24 +8,8 @@ import java.util.Set;
 
 public class Task2 {
     public static void main(String[] args) {
-        List<String> s = Utils.getListFromText("src/main/resources/SixthDay.txt");
-        Set<Character> charSet = new HashSet<>();
-        int quantityOfUniques = 14;
-
-        int i = 0;
-        while (true){
-            if (charSet.size()==quantityOfUniques){
-                System.out.println(i+quantityOfUniques-1);
-                break;
-            }
-            charSet.clear();
-            for (int j = i; j<i+quantityOfUniques; j++){
-                charSet.add(s.get(0).charAt(j));
-            }
-            System.out.println(charSet);
-            i++;
-        }
-
-
+        List<String> list = Utils.getListFromText("src/main/resources/SixthDay.txt");
+        String s = list.get(0);
+        System.out.println(Task1.endOfKey(s, 14));
     }
 }

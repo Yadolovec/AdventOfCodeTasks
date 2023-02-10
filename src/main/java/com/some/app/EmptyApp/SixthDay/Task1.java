@@ -8,24 +8,24 @@ import java.util.Set;
 
 public class Task1 {
     public static void main(String[] args) {
-        List<String> s = Utils.getListFromText("src/main/resources/SixthDay.txt");
-        Set<Character> charSet = new HashSet<>();
-        int quantityOfUniques = 4;
+        List<String> list = Utils.getListFromText("src/main/resources/SixthDay.txt");
+        String s = list.get(0);
+        System.out.println(endOfKey(s, 4));
+    }
 
+    public static int endOfKey(String s, int quantityOfUniques) {
+        Set<Character> charSet = new HashSet<>();
         int i = 0;
         while (true){
             if (charSet.size()==quantityOfUniques){
-                System.out.println(i+quantityOfUniques-1);
-                break;
+                return (i+quantityOfUniques-1);
             }
             charSet.clear();
             for (int j = i; j<i+quantityOfUniques; j++){
-                charSet.add(s.get(0).charAt(j));
+                charSet.add(s.charAt(j));
             }
             System.out.println(charSet);
             i++;
         }
-
-
     }
 }
