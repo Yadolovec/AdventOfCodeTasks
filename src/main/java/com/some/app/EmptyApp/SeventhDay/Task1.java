@@ -14,29 +14,49 @@ public class Task1 {
         String s = "";
         int i = 2;
 
-
+        //mother -> first folder;
         while (list.get(i).charAt(0)!='$'){
             contains.add(list.get(i));
             i++;
         }
         addToDir(contains, mother);
+        System.out.println("mother oooooooooooooooooooooooooo");
+        mother.showAll();
         contains.clear();
+        /*
+        mother -> first folder;                 ///////////////////////DONE
 
-
-//        if (list.get(i).startsWith("$ cd ")) {
-//            s = list.get(i).substring(5);
-//            if (!s.equals("..")){
-//                Dir subDir = new Dir(s, mother);
-//                i+=2;
-//                while (list.get(i).charAt(0)!='$'){
-//                    contains.add(list.get(i));
-//                    i++;
-//                }
-//                addToDir(contains, subDir);
-//                mother.fillDir(subDir);
-//                mother = subDir;
-//            }
-//        }
+        $ cd 'name' -> find in mother 'name' -> fill it -> mother = 'name'
+        $ cd .. -> mother = mother.motherFolder
+        until list ends;
+        */
+        Dir subDir;
+        while (i<list.size()) {
+            if (list.get(i).startsWith("$ cd ")) {
+                s = list.get(i).substring(5);
+                if (!s.equals("..")){
+                    i++;
+                    i++;
+                    subDir = new Dir(s, mother);
+                    System.out.println(s+" ooooooooooooooooooooooooooooo");
+                    while (list.get(i).charAt(0) != '$') {
+                        contains.add(list.get(i));
+                        System.out.println(list.get(i));
+                        i++;
+                        if (i==list.size())
+                            break;
+                    }
+                    addToDir(contains, subDir);
+                    contains.clear();
+                    mother = subDir;
+                } else {
+                        mother = mother.getMotherFolder();
+                        i++;
+                }
+            } else if (list.get(i).startsWith("$ ls")){
+                i++;
+            }
+        }
     }
 
 
@@ -66,3 +86,21 @@ public class Task1 {
             dir.setFiles(files);
     }
 }
+
+/*if (list.get(i).startsWith("$ cd ")) {
+                s = list.get(i).substring(5);
+                if (!s.equals("..")) {
+                    subDir = new Dir(s, mother);
+                    i += 2;
+                    while (list.get(i).charAt(0) != '$') {
+                        contains.add(list.get(i));
+                        i++;
+                    }
+                    addToDir(contains, subDir);
+                    mother.fillDir(subDir);
+                    mother = subDir;
+                } else {
+                    mother = mother.getMotherFolder();
+                    i++;
+                }
+            }*/
