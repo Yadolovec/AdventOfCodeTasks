@@ -20,8 +20,6 @@ public class Task1 {
             i++;
         }
         addToDir(contains, mother);
-        System.out.println("mother oooooooooooooooooooooooooo");
-        mother.showAll();
         contains.clear();
         /*
         mother -> first folder;                 ///////////////////////DONE
@@ -38,16 +36,15 @@ public class Task1 {
                     i++;
                     i++;
                     subDir = new Dir(s, mother);
-                    System.out.println(s+" ooooooooooooooooooooooooooooo");
                     while (list.get(i).charAt(0) != '$') {
                         contains.add(list.get(i));
-                        System.out.println(list.get(i));
                         i++;
                         if (i==list.size())
                             break;
                     }
                     addToDir(contains, subDir);
                     contains.clear();
+                    mother.fillDir(subDir);
                     mother = subDir;
                 } else {
                         mother = mother.getMotherFolder();
@@ -57,6 +54,17 @@ public class Task1 {
                 i++;
             }
         }
+
+        motherOfAll.showAll();
+        System.out.println();
+
+        motherOfAll.getDirs().get(0).showAll();
+        System.out.println();
+
+        motherOfAll.getDirs().get(0).getDirs().get(0).showAll();
+        System.out.println();
+
+        motherOfAll.getDirs().get(1).showAll();
     }
 
 

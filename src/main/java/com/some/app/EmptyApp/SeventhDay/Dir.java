@@ -53,12 +53,21 @@ public class Dir {
     }
 
     public void showAll(){
-        for (File f : files){
-            System.out.println(f);
+        System.out.print("dir " + name);
+        if ((dirs==null||dirs.isEmpty())&&(files==null||files.isEmpty())) {
+            System.out.print(" is empty");
+            return;
         }
-        for (Dir d : dirs){
-            System.out.println(d);
-        }
+        System.out.println();
+
+        if (!(files==null||files.isEmpty()))
+            for (File f : files){
+                System.out.println(" "+f);
+            }
+        if (!(dirs==null||dirs.isEmpty()))
+            for (Dir d : dirs){
+                System.out.println(" "+d);
+            }
     }
 
     public void fillDir(Dir subDir){
