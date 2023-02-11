@@ -53,12 +53,12 @@ public class Dir {
     }
 
     public void showAll(){
-        System.out.print("dir " + name);
+        System.out.println("dir " + name);
+        System.out.println('{');
         if ((dirs==null||dirs.isEmpty())&&(files==null||files.isEmpty())) {
             System.out.print(" is empty");
             return;
         }
-        System.out.println();
 
         if (!(files==null||files.isEmpty()))
             for (File f : files){
@@ -66,9 +66,46 @@ public class Dir {
             }
         if (!(dirs==null||dirs.isEmpty()))
             for (Dir d : dirs){
-                System.out.println(" "+d);
+//                System.out.println(" "+d);
+                System.out.print(" ");
+                d.showAll();
             }
+
+        System.out.println('}');
     }
+
+    public int size(){
+        int toReturn = 0;
+
+        if (!(files==null||files.isEmpty()))
+            for (File f : files){
+                toReturn+=f.getSize();
+            }
+        if (!(dirs==null||dirs.isEmpty()))
+            for (Dir d : dirs){
+                toReturn+=d.size();
+            }
+
+        return toReturn;
+    }
+
+//    public int sizeUnder100k(int sum){
+//        int batery = 0;
+//
+//        if (!(files==null||files.isEmpty()))
+//            for (File f : files){
+//                batery+=f.getSize();
+//            }
+//        if (!(dirs==null||dirs.isEmpty()))
+//            for (Dir d : dirs){
+//                batery+=d.sizeUnder100k(sum);
+//            }
+//
+//        if (batery>100000){
+//            return sum;
+//        }
+//        return sum+batery;
+//    }
 
     public void fillDir(Dir subDir){
         String s = subDir.getName();
@@ -79,21 +116,21 @@ public class Dir {
     }
 
     public boolean isEmpty(){
-        boolean noDirs = true;
+        boolean haveDirs = true;
         if (dirs == null) {
-            noDirs = false;
+            haveDirs = false;
         } else if (dirs.isEmpty()){
-            noDirs = false;
+            haveDirs = false;
         }
 
-        boolean noFiles = true;
+        boolean haveFiles = true;
         if (files == null) {
-            noFiles = false;
+            haveFiles = false;
         } else if (files.isEmpty()){
-            noFiles = false;
+            haveFiles = false;
         }
 
-        return !(noDirs||noFiles);
+        return !(haveDirs||haveFiles);
 
     }
 }

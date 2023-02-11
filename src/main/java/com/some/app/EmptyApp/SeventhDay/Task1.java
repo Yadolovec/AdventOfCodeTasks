@@ -6,8 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task1 {
+    static int battery = 0;
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Test/Data7");
+        List<String> list = Utils.getListFromText("src/main/resources/SeventhDay.txt");
         Dir motherOfAll = new Dir("motherOfAll", null);
         Dir mother = motherOfAll;
         List<String> contains = new ArrayList<>();
@@ -28,6 +29,7 @@ public class Task1 {
         $ cd .. -> mother = mother.motherFolder
         until list ends;
         */
+
         Dir subDir;
         while (i<list.size()) {
             if (list.get(i).startsWith("$ cd ")) {
@@ -56,18 +58,31 @@ public class Task1 {
         }
 
         motherOfAll.showAll();
-        System.out.println();
+        System.out.println("Size is "+motherOfAll.size());
 
-        motherOfAll.getDirs().get(0).showAll();
-        System.out.println();
 
-        motherOfAll.getDirs().get(0).getDirs().get(0).showAll();
-        System.out.println();
+//        System.out.println(motherOfAll.sizeUnder100k(0));
 
-        motherOfAll.getDirs().get(1).showAll();
+
+        goThroughAllDirs(motherOfAll);
+        System.out.println(battery);
+
+
+
     }
 
 
+    public static void goThroughAllDirs(Dir dir){
+        if (dir.size()<100000) {
+            battery = battery + dir.size();
+
+        }
+
+        if (!dir.isEmpty()&&dir.getDirs()!=null)
+            for (Dir subDir : dir.getDirs()){
+                goThroughAllDirs(subDir);
+            }
+    }
 
     public static void addToDir(List<String> list, Dir dir){
 
