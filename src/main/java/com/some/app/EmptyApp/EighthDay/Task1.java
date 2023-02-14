@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Task1 {
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Test/EighthDay.txt");
+        List<String> list = Utils.getListFromText("src/main/resources/EighthDay.txt");
         System.out.println(list);
         int height = list.size();
         int width = list.get(0).length();
@@ -17,7 +17,6 @@ public class Task1 {
             for (int j = 0; j<width; j++){
                 forest[i][j] = Integer.parseInt(list.get(i).substring(j, j+1));
             }
-            System.out.println(Arrays.toString(forest[i]));
         }
 
         int counter = list.size()*2 + list.get(0).length()*2 - 4;
@@ -26,6 +25,10 @@ public class Task1 {
                 counter = counter + checkTheTree(i, j, forest);
             }
         }
+
+        System.out.println(counter);
+
+
     }
 
     public static int checkTheTree(int row, int column, int[][] forest){
@@ -40,7 +43,7 @@ public class Task1 {
             }
         }
 
-        for (int i = row+1; i< forest.length; i++){
+        for (int i = row+1; i<forest.length; i++){
             if (forest[i][column]>=tree){
                 break;
             } else {
@@ -70,7 +73,7 @@ public class Task1 {
             }
         }
 
-
+        return 0;
 
 
     }
