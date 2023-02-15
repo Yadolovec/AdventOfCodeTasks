@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Task1 {
+public class Task2 {
     static int counter = 1;
     static int yHead = 0;
     static int xHead = 0;
@@ -18,7 +18,7 @@ public class Task1 {
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Test/NinthDay.txt");
+        List<String> list = Utils.getListFromText("src/main/resources/NinthDay.txt");
 
         for (String s : list){
             doInstruction(s);
@@ -42,15 +42,14 @@ public class Task1 {
 
 
         for (int i = 0; i<steps; i++){
-            int [] previousHeadPosition = new int[]{xHead, yHead};
-            doStep(direction, previousHeadPosition);
+            doStep(direction);
         }
 
     }
 
 
 
-    public static void doStep(String direction, int[] previousHeadPosition){
+    public static void doStep(String direction){
         if (direction.equals("R"))
             xHead++;
         if (direction.equals("L"))
@@ -61,13 +60,31 @@ public class Task1 {
             yHead++;
 
         if (tooFar()){
-            xTail = previousHeadPosition[0];
-            yTail = previousHeadPosition[1];
+            if (xTail == xHead){
+                if (yHead-yTail>0){
+                    yTail++;
+                } else {
+                    yTail--;
+                }
+            } else if (yTail == yHead) {
+                if (xHead - xTail > 0) {
+                    xTail++;
+                } else {
+                    xTail--;
+                }
+            } else {
+                if (xHead>xTail){
+                    xTail++;
+                } else {
+                    xTail--;
+                }
+                if (yHead>yTail){
+                    yTail++;
+                } else {
+                    yTail--;
+                }
+            }
 
-//            if (!wasThere[yTail][xTail]){
-//                wasThere[yTail][xTail] = true;
-//                counter++;
-//            }
             for (int[] a : wasThere){
                 if (a[0] == yTail && a[1] == xTail){
                     return;
