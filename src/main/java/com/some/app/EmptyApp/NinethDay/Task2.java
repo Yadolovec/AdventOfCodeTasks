@@ -21,10 +21,10 @@ public class Task2 {
         List<String> list = Utils.getListFromText("src/main/resources/Test/NinthDay.txt");
         for (String s : list) {
             doInstruction(s);
+            System.out.println(xHead[9]+" "+yHead[9]);
         }
         System.out.println(counter);
 
-        System.out.println(xTail[9]+" "+yTail[9]);
         for (int i = 10; i>-6; i--){
             for (int j = -12; j<16; j++){
                 char c = '-';
@@ -108,11 +108,11 @@ public class Task2 {
                 yHead[number+1]=yTail[number];
             } else {
                 for (int[] a : wasThere) {
-                    if (a[0] == yTail[9] && a[1] == xTail[9]) {
+                    if (a[0] == yHead[9] && a[1] == xHead[9]) {
                         return;
                     }
                 }
-                wasThere.add(new int[]{yTail[9], xTail[9]});
+                wasThere.add(new int[]{yHead[9], xHead[9]});
                 counter++;
             }
 
