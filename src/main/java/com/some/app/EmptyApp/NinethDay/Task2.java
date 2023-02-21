@@ -8,97 +8,114 @@ import java.util.List;
 
 public class Task2 {
     static int counter = 1;
-    static int yHead = 0;
-    static int xHead = 0;
-    static int yTail = 0;
-    static int xTail = 0;
+    static int[] yHead = new int[]{0,0,0,0,0,0,0,0,0,0};
+    static int[] xHead = new int[]{0,0,0,0,0,0,0,0,0,0};
+    static int[] yTail = new int[]{0,0,0,0,0,0,0,0,0,0};
+    static int[] xTail = new int[]{0,0,0,0,0,0,0,0,0,0};
     static List<int[]> wasThere = new ArrayList<>();
     static {
-        wasThere.add(new int[]{0,0});
+        wasThere.add(new int[]{0, 0});
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/NinthDay.txt");
-
-        for (String s : list){
+        List<String> list = Utils.getListFromText("src/main/resources/Test/NinthDay.txt");
+        for (String s : list) {
             doInstruction(s);
         }
-
         System.out.println(counter);
 
+        System.out.println(xTail[9]+" "+yTail[9]);
+        for (int i = 10; i>-6; i--){
+            for (int j = -12; j<16; j++){
+                char c = '-';
+                for (int[] a : wasThere) {
+                    if (a[0] == i && a[1] == j) {
+                        c = '#';
+                        break;
+                    }
+                }
+                System.out.print(c);
+            }
+            System.out.println();
+        }
 
     }
 
-    public static void doInstruction(String s){
+    public static void doInstruction(String s) {
         String[] directionAndSteps = s.split(" ");
         makeSteps(directionAndSteps);
 
     }
 
-    public static void makeSteps(String[] directionAndStep){
-
+    public static void makeSteps(String[] directionAndStep) {
         String direction = directionAndStep[0];
         int steps = Integer.parseInt(directionAndStep[1]);
 
-
-        for (int i = 0; i<steps; i++){
+        for (int i = 0; i < steps; i++) {
             doStep(direction);
+            for (int j = 0; j < 10; j++) {
+                moveTailIfTooFar(j);
+            }
         }
+
 
     }
 
-
-
-    public static void doStep(String direction){
+    public static void doStep(String direction) {
         if (direction.equals("R"))
-            xHead++;
+            xHead[0]++;
         if (direction.equals("L"))
-            xHead--;
+            xHead[0]--;
         if (direction.equals("D"))
-            yHead--;
+            yHead[0]--;
         if (direction.equals("U"))
-            yHead++;
+            yHead[0]++;
+    }
 
-        if (tooFar()){
-            if (xTail == xHead){
-                if (yHead-yTail>0){
-                    yTail++;
+    public static boolean tooFar(int number) {
+        return (Math.abs(xHead[number] - xTail[number]) > 1) || (Math.abs(yHead[number] - yTail[number]) > 1);
+    }
+    public static void moveTailIfTooFar(int number){
+        if (tooFar(number)) {
+            if (xTail[number] == xHead[number]) {
+                if (yHead[number] - yTail[number] > 0) {
+                    yTail[number]++;
                 } else {
-                    yTail--;
+                    yTail[number]--;
                 }
-            } else if (yTail == yHead) {
-                if (xHead - xTail > 0) {
-                    xTail++;
+            } else if (yTail[number] == yHead[number]) {
+                if (xHead[number] - xTail[number] > 0) {
+                    xTail[number]++;
                 } else {
-                    xTail--;
+                    xTail[number]--;
                 }
             } else {
-                if (xHead>xTail){
-                    xTail++;
+                if (xHead[number] > xTail[number]) {
+                    xTail[number]++;
                 } else {
-                    xTail--;
+                    xTail[number]--;
                 }
-                if (yHead>yTail){
-                    yTail++;
+                if (yHead[number] > yTail[number]) {
+                    yTail[number]++;
                 } else {
-                    yTail--;
+                    yTail[number]--;
                 }
             }
 
-            for (int[] a : wasThere){
-                if (a[0] == yTail && a[1] == xTail){
-                    return;
+
+            if (number != 9){
+                xHead[number+1]=xTail[number];
+                yHead[number+1]=yTail[number];
+            } else {
+                for (int[] a : wasThere) {
+                    if (a[0] == yTail[9] && a[1] == xTail[9]) {
+                        return;
+                    }
                 }
+                wasThere.add(new int[]{yTail[9], xTail[9]});
+                counter++;
             }
 
-            wasThere.add(new int[]{yTail, xTail});
-            counter++;
         }
-
-
-
-    }
-    public static boolean tooFar(){
-        return (Math.abs(xHead - xTail) > 1) || (Math.abs(yHead - yTail) > 1);
     }
 }
