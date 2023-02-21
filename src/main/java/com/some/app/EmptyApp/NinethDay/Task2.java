@@ -8,17 +8,17 @@ import java.util.List;
 
 public class Task2 {
     static int counter = 1;
-    static int[] yHead = new int[]{0,0,0,0,0,0,0,0,0,0};
-    static int[] xHead = new int[]{0,0,0,0,0,0,0,0,0,0};
-    static int[] yTail = new int[]{0,0,0,0,0,0,0,0,0,0};
-    static int[] xTail = new int[]{0,0,0,0,0,0,0,0,0,0};
+    static int[] yHead = new int[]{0,0,0,0,0,0,0,0,0,0,0};
+    static int[] xHead = new int[]{0,0,0,0,0,0,0,0,0,0,0};
+    static int[] yTail = new int[]{0,0,0,0,0,0,0,0,0,0,0};
+    static int[] xTail = new int[]{0,0,0,0,0,0,0,0,0,0,0};
     static List<int[]> wasThere = new ArrayList<>();
     static {
         wasThere.add(new int[]{0, 0});
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Test/NinthDay.txt");
+        List<String> list = Utils.getListFromText("src/main/resources/NinthDay.txt");
         for (String s : list) {
             doInstruction(s);
             System.out.println(xHead[9]+" "+yHead[9]);
@@ -103,10 +103,10 @@ public class Task2 {
             }
 
 
-            if (number != 9){
+
                 xHead[number+1]=xTail[number];
                 yHead[number+1]=yTail[number];
-            } else {
+
                 for (int[] a : wasThere) {
                     if (a[0] == yHead[9] && a[1] == xHead[9]) {
                         return;
@@ -114,7 +114,7 @@ public class Task2 {
                 }
                 wasThere.add(new int[]{yHead[9], xHead[9]});
                 counter++;
-            }
+
 
         }
     }
