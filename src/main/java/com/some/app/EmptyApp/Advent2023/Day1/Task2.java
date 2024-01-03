@@ -2,8 +2,9 @@ package com.some.app.EmptyApp.Advent2023.Day1;
 
 import com.some.app.EmptyApp.util.Utils;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Volodymyr Havrylets
@@ -12,58 +13,68 @@ import java.util.List;
  **/
 public class Task2 {
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day1t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day1");
 
         int answer = 0;
+
         for (String line : list) {
-            line = wordsToDigits(line);
-            char[] letters = line.toCharArray();
-            for (int i = line.length() - 1; i >= 0; i--) {
-                if (Character.isDigit(letters[i])) {
-                    answer += letters[i] - '0';
+            String newLine = wordsToDigits(line);
+
+            char[] charArray = newLine.toCharArray();
+
+            for (int i = 0; i < charArray.length; i++) {
+                if (Character.isDigit(charArray[i])) {
+                    answer = answer + (charArray[i] - '0') * 10;
+                    break;
+                }
+            }
+            for (int i = charArray.length - 1; i >= 0; i--) {
+                if (Character.isDigit(charArray[i])) {
+                    answer = answer + (charArray[i] - '0');
                     break;
                 }
             }
 
-            for (int i = 0; i < line.length(); i++) {
-                if (Character.isDigit(letters[i])) {
-                    answer += (letters[i] - '0') * 10;
-                    break;
-                }
-            }
 
         }
+
         System.out.println(answer);
 
     }
 
     public static String wordsToDigits(String line) {
-        List<String> digitsNames = new ArrayList<>();
-        digitsNames.add("one");
-        digitsNames.add("two");
-        digitsNames.add("three");
-        digitsNames.add("four");
-        digitsNames.add("five");
-        digitsNames.add("six");
-        digitsNames.add("seven");
-        digitsNames.add("eight");
-        digitsNames.add("nine");
+        Map<String, Integer> nameToDigit = new HashMap<>();
 
-        int minStart = -1;
-        int maxStart = -1;
+        nameToDigit.put("one", 1);
+        nameToDigit.put("two", 2);
+        nameToDigit.put("three", 3);
+        nameToDigit.put("four", 4);
+        nameToDigit.put("five", 5);
+        nameToDigit.put("six", 6);
+        nameToDigit.put("seven", 7);
+        nameToDigit.put("eight", 8);
+        nameToDigit.put("nine", 9);
 
-        for (String digit : digitsNames) {
+        int indexFirst = Integer.MAX_VALUE;
+        int indexLast = Integer.MIN_VALUE;
+        String firstDigit = "";
+        String lastDigit = "";
+        for (String digit : nameToDigit.keySet()) {
             if (line.contains(digit)) {
-                minStart = minStart == -1 ? line.indexOf(digit) : -1;
-                maxStart = maxStart == -1 ? line.lastIndexOf(digit) : -1;
+                if (line.indexOf(digit) < indexFirst) {
+                    indexFirst = line.indexOf(digit);
+                    firstDigit = digit;
+                }
 
-                minStart = minStart < line.indexOf(digit) ? line.indexOf(digit) : -1;
-                maxStart = maxStart == -1 ? line.lastIndexOf(digit) : -1;
+                if (line.lastIndexOf(digit) > indexLast) {
+                    indexLast = line.lastIndexOf(digit);
+                    lastDigit = digit;
+                }
             }
         }
-        return
 
-
+        line = line.replaceFirst(firstDigit, nameToDigit.get(firstDigit) + "");
+        return line.replaceAll(lastDigit, nameToDigit.get(lastDigit) + "");
     }
 
 
