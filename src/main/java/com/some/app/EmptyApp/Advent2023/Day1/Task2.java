@@ -13,31 +13,29 @@ import java.util.Map;
  **/
 public class Task2 {
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day1");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day1t");
 
         int answer = 0;
-
         for (String line : list) {
             String newLine = wordsToDigits(line);
+            System.out.println(newLine);
+            char[] letters = newLine.toCharArray();
 
-            char[] charArray = newLine.toCharArray();
-
-            for (int i = 0; i < charArray.length; i++) {
-                if (Character.isDigit(charArray[i])) {
-                    answer = answer + (charArray[i] - '0') * 10;
-                    break;
-                }
-            }
-            for (int i = charArray.length - 1; i >= 0; i--) {
-                if (Character.isDigit(charArray[i])) {
-                    answer = answer + (charArray[i] - '0');
+            for (int i = newLine.length() - 1; i >= 0; i--) {
+                if (Character.isDigit(letters[i])) {
+                    answer += letters[i] - '0';
                     break;
                 }
             }
 
+            for (int i = 0; i < newLine.length(); i++) {
+                if (Character.isDigit(letters[i])) {
+                    answer += (letters[i] - '0') * 10;
+                    break;
+                }
+            }
 
         }
-
         System.out.println(answer);
 
     }
@@ -56,25 +54,38 @@ public class Task2 {
         nameToDigit.put("nine", 9);
 
         int indexFirst = Integer.MAX_VALUE;
-        int indexLast = Integer.MIN_VALUE;
         String firstDigit = "";
-        String lastDigit = "";
         for (String digit : nameToDigit.keySet()) {
             if (line.contains(digit)) {
                 if (line.indexOf(digit) < indexFirst) {
                     indexFirst = line.indexOf(digit);
                     firstDigit = digit;
                 }
+            }
+        }
+        if (!firstDigit.equals(""))
+        line = line.replaceFirst(firstDigit, nameToDigit.get(firstDigit) + "");
 
-                if (line.lastIndexOf(digit) > indexLast) {
-                    indexLast = line.lastIndexOf(digit);
+        line = new StringBuilder(line).reverse().toString();
+        String lastDigit = "";
+        String reverseLastDigit = "";
+        int indexLast = Integer.MAX_VALUE;
+        for (String digit : nameToDigit.keySet()) {
+            String reverseDigit = new StringBuilder(digit).reverse().toString();
+
+            if (line.contains(reverseDigit)) {
+                if (line.indexOf(reverseDigit) < indexLast) {
+                    indexLast = line.indexOf(reverseDigit);
+                    reverseLastDigit = reverseDigit;
                     lastDigit = digit;
                 }
             }
         }
 
-        line = line.replaceFirst(firstDigit, nameToDigit.get(firstDigit) + "");
-        return line.replaceAll(lastDigit, nameToDigit.get(lastDigit) + "");
+        if (!lastDigit.equals(""))
+        line =  line.replaceFirst(reverseLastDigit, nameToDigit.get(lastDigit) + "");
+
+        return new StringBuilder(line).reverse().toString();
     }
 
 
