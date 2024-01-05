@@ -13,7 +13,7 @@ import java.util.Map;
  **/
 public class Task2 {
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day1t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day1");
 
         int answer = 0;
         for (String line : list) {
@@ -64,7 +64,7 @@ public class Task2 {
             }
         }
         if (!firstDigit.equals(""))
-        line = line.replaceFirst(firstDigit, nameToDigit.get(firstDigit) + "");
+            line = line.replaceFirst(firstDigit, nameToDigit.get(firstDigit) + firstDigit);
 
         line = new StringBuilder(line).reverse().toString();
         String lastDigit = "";
@@ -83,7 +83,7 @@ public class Task2 {
         }
 
         if (!lastDigit.equals(""))
-        line =  line.replaceFirst(reverseLastDigit, nameToDigit.get(lastDigit) + "");
+            line =  line.replaceFirst(reverseLastDigit, nameToDigit.get(lastDigit) + reverseLastDigit);
 
         return new StringBuilder(line).reverse().toString();
     }
