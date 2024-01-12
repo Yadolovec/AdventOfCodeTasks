@@ -12,7 +12,7 @@ import java.util.List;
  **/
 public class Task1 {
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day3t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day3");
 
         List<Number> numbers = new ArrayList<>();
         List<Coordinates> symbolsCoordinates = new ArrayList<>();
@@ -41,8 +41,18 @@ public class Task1 {
                     end = j - 1;
                     numberOperation = false;
 
-                    System.out.println(start + " " + end);
-                    int value = Integer.parseInt(s.substring(start, end));
+                    int value = Integer.parseInt(s.substring(start, end + 1));
+
+                    numbers.add(new Number(new Coordinates(start, i),
+                            end - start + 1,
+                            value));
+                }
+
+                if (numberOperation && j == charArray.length - 1) {
+                    end = j;
+                    numberOperation = false;
+
+                    int value = Integer.parseInt(s.substring(start, end + 1));
 
                     numbers.add(new Number(new Coordinates(start, i),
                             end - start + 1,
@@ -50,6 +60,35 @@ public class Task1 {
                 }
             }
         }
+
+        int answer = 0;
+        for (Number number : numbers) {
+            for (Coordinates coordinates : symbolsCoordinates) {
+                if (isAdjacent(number, coordinates)) {
+                    answer += number.getValue();
+                    break;
+                }
+            }
+        }
+
+        System.out.println(answer);
+    }
+
+    public static boolean isAdjacent(Number number, Coordinates coordinates) {
+
+        Coordinates begin = number.getBeginCoordinates();
+        int length = number.getLength();
+
+        if (Math.abs(coordinates.getY() - begin.getY()) <= 1
+                && coordinates.getX() >= begin.getX() - 1
+                && coordinates.getX() <= begin.getX() + length) {
+
+            System.out.println(number.getValue());
+            return true;
+        }
+        ;
+
+        return false;
     }
 
 }
