@@ -14,10 +14,13 @@ public class Task2 {
 
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day4");
+        List<String> l = list;
         list = list.stream().map(x -> x.split(":")[1]).collect(Collectors.toList());
 
         Map<Integer, Integer> repeatMap = new HashMap<>();
-        repeatMap.put(0, 0);
+        for (int i = 0; i < list.size(); i++) {
+            repeatMap.put(i, 1);
+        }
 
         for (int i = 0; i < list.size(); i++) {
             int quantityOfWinnings = 0;
@@ -26,31 +29,21 @@ public class Task2 {
             Set<Integer> winningNumbersSet = new HashSet<>(extractNumbers(sArray[0]));
             List<Integer> numbers = extractNumbers(sArray[1]);
 
-            for (Integer j : numbers) {
-                if (winningNumbersSet.contains(j)) {
+
+            for (int number : numbers) {
+                if (winningNumbersSet.contains(number))
                     quantityOfWinnings++;
-                }
             }
 
-            if (!repeatMap.containsKey(i)){
-                repeatMap.put(i, 0);
+            for (int j = i + 1; j <= i + quantityOfWinnings; j++) {
+                if (j < list.size())
+                    repeatMap.put(j, repeatMap.get(j) + repeatMap.get(i));
             }
+            System.out.println(l.get(i));
 
-            for (int k = i + 1; k <= i + quantityOfWinnings; k++) {
-                if (repeatMap.containsKey(k)) {
-                    repeatMap.put(k, repeatMap.get(k) + repeatMap.get(i) + 1);
-                } else {
-                    if (k < list.size())
-                        repeatMap.put(k, 1);
-                }
-            }
         }
 
-        int answer = list.size() + repeatMap
-                .values()
-                .stream()
-                .reduce(Integer::sum)
-                .get();
+        int answer = repeatMap.values().stream().reduce(Integer::sum).get();
 
         System.out.println(answer);
 
