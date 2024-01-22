@@ -3,6 +3,7 @@ package com.some.app.EmptyApp.Advent2023.Day5;
 import com.some.app.EmptyApp.util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class Task1 {
         int from = 0;
         int to = 0;
 
-        Map<Integer, Integer> changeLine;
+        Map<Integer, Integer> instructions;
         List<Integer> seeds = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
 
@@ -28,7 +29,8 @@ public class Task1 {
                 if (from == 0) {
                     seeds = extractNumbers(list, from, to);
                 } else {
-                    changeLine = extractChangeLine(list, from + 1, to - 2);
+                    // +1 and -2 are for empty spaces
+                    instructions = extractInstructionsLine(extractNumbers(list, from + 1, to - 2));
                 }
             }
 
@@ -38,10 +40,20 @@ public class Task1 {
         System.out.println(" ");
     }
 
-    public static Map<Integer, Integer> extractChangeLine(List<String> list, int from, int to) {
+    public static Map<Integer, Integer> extractInstructionsLine(List<Integer> instruction) {
+        Map<Integer, Integer> toReturn = new HashMap<>();
 
-        System.out.println("");
-        return null;
+        for (int i = 0; i < instruction.size(); i += 3) {
+            int startIndex = instruction.get(i);
+            int correspondingValue = instruction.get(i + 1);
+            int changeQuantity = instruction.get(i + 2);
+
+            for (int j = startIndex; j < startIndex + changeQuantity; j++) {
+                toReturn.put(j, correspondingValue + (j - startIndex));
+            }
+        }
+
+        return toReturn;
     }
 
     public static List<Integer> extractNumbers(List<String> list, int from, int to) {
