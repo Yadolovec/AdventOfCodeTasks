@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author Volodymyr Havrylets
@@ -14,15 +15,15 @@ import java.util.Map;
  **/
 public class Task1 {
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5");
 
         int from = 0;
         int to = 0;
 
-        Map<Integer, Integer> instructions;
-        List<Integer> seeds = new ArrayList<>();
+        List<Long> seeds = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
 
+            Map<Long, Long> instructions = new HashMap<>();
             String s = list.get(i);
             if (s.contains(":") && i != from) {
                 to = i;
@@ -31,39 +32,49 @@ public class Task1 {
                 } else {
                     // +1 and -2 are for empty spaces
                     instructions = extractInstructionsLine(extractNumbers(list, from + 1, to - 2));
+                    Map<Long, Long> finalInstructions = instructions;
+                    seeds = seeds.stream().map(x -> x = finalInstructions.getOrDefault(x, x)).collect(Collectors.toList());
+
+                    for (int j = 0; j < list.size(); j++) {
+                        long seed = seeds.get(j);
+                        long toAdd = instructions.containsKey(seed) ? instructions.get(seed) : seed;
+                        seeds.add(j, toAdd);
+                    }
                 }
             }
 
             from = to;
         }
 
-        System.out.println(" ");
+
+        System.out.println(seeds.stream().reduce(Long::min));
     }
 
-    public static Map<Integer, Integer> extractInstructionsLine(List<Integer> instruction) {
-        Map<Integer, Integer> toReturn = new HashMap<>();
+    public static Map<Long, Long> extractInstructionsLine(List<Long> instruction) {
+        Map<Long, Long> toReturn = new HashMap<>();
 
         for (int i = 0; i < instruction.size(); i += 3) {
-            int startIndex = instruction.get(i);
-            int correspondingValue = instruction.get(i + 1);
-            int changeQuantity = instruction.get(i + 2);
+            long startIndex = instruction.get(i);
+            long correspondingValue = instruction.get(i + 1);
+            long changeQuantity = instruction.get(i + 2);
 
-            for (int j = startIndex; j < startIndex + changeQuantity; j++) {
-                toReturn.put(j, correspondingValue + (j - startIndex));
+            for (int j = 0; j < changeQuantity; j++) {
+
+                toReturn.put(correspondingValue + j, j + startIndex);
             }
         }
 
         return toReturn;
     }
 
-    public static List<Integer> extractNumbers(List<String> list, int from, int to) {
-        List<Integer> toReturn = new ArrayList<>();
+    public static List<Long> extractNumbers(List<String> list, int from, int to) {
+        List<Long> toReturn = new ArrayList<>();
 
         for (int i = from; i <= to; i++) {
             String[] sArray = list.get(i).split(" ");
             for (String s1 : sArray) {
                 if (s1.chars().allMatch(Character::isDigit) && !s1.isEmpty()) {
-                    toReturn.add(Integer.parseInt(s1));
+                    toReturn.add(Long.parseLong(s1));
                 }
             }
         }
