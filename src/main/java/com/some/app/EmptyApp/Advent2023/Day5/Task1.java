@@ -3,10 +3,9 @@ package com.some.app.EmptyApp.Advent2023.Day5;
 import com.some.app.EmptyApp.util.Utils;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /**
  * @author Volodymyr Havrylets
@@ -23,7 +22,6 @@ public class Task1 {
         List<Long> seeds = new ArrayList<>();
         for (int i = 0; i < list.size(); i++) {
 
-            Map<Long, Long> instructions = new HashMap<>();
             String s = list.get(i);
             if (s.contains(":") && i != from) {
                 to = i;
@@ -31,15 +29,8 @@ public class Task1 {
                     seeds = extractNumbers(list, from, to);
                 } else {
                     // +1 and -2 are for empty spaces
-                    instructions = extractInstructionsLine(extractNumbers(list, from + 1, to - 2));
-                    Map<Long, Long> finalInstructions = instructions;
-                    seeds = seeds.stream().map(x -> x = finalInstructions.getOrDefault(x, x)).collect(Collectors.toList());
+                    followInstructions(seeds, extractNumbers(list, from + 1, to - 2));
 
-                    for (int j = 0; j < list.size(); j++) {
-                        long seed = seeds.get(j);
-                        long toAdd = instructions.containsKey(seed) ? instructions.get(seed) : seed;
-                        seeds.add(j, toAdd);
-                    }
                 }
             }
 
@@ -50,21 +41,25 @@ public class Task1 {
         System.out.println(seeds.stream().reduce(Long::min));
     }
 
-    public static Map<Long, Long> extractInstructionsLine(List<Long> instruction) {
-        Map<Long, Long> toReturn = new HashMap<>();
+    public static List<Long> followInstructions(List<Long> seeds, List<Long> instruction) {
 
+        Set<Integer> alreadyUsed = new HashSet<>();
         for (int i = 0; i < instruction.size(); i += 3) {
-            long startIndex = instruction.get(i);
-            long correspondingValue = instruction.get(i + 1);
-            long changeQuantity = instruction.get(i + 2);
+            long correspondingValue = instruction.get(i);
+            long start = instruction.get(i + 1);
+            long quantity = instruction.get(i + 2);
 
-            for (int j = 0; j < changeQuantity; j++) {
-
-                toReturn.put(correspondingValue + j, j + startIndex);
+            for (int j = 0; j < seeds.size(); j++) {
+                long seed = seeds.get(j);
+                if (seed >= start && seed < start + quantity && !alreadyUsed.contains(j)) {
+                    seeds.set(j, correspondingValue + seed - start);
+                    alreadyUsed.add(j);
+                }
             }
         }
 
-        return toReturn;
+        return seeds;
+
     }
 
     public static List<Long> extractNumbers(List<String> list, int from, int to) {
