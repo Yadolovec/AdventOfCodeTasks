@@ -23,7 +23,7 @@ public class Task1 {
         for (int i = 0; i < list.size(); i++) {
 
             String s = list.get(i);
-            if (s.contains(":") && i != from) {
+            if ((s.contains(":") && i != from) || i == list.size() - 1) {
                 to = i;
                 if (from == 0) {
                     seeds = extractNumbers(list, from, to);
