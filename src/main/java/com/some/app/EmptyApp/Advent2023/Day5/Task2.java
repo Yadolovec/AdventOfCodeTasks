@@ -6,4 +6,7 @@ package com.some.app.EmptyApp.Advent2023.Day5;
  * @since 26.01.2024
  **/
 public class Task2 {
+    public static void main(String[] args) {
+
+    }
 }
