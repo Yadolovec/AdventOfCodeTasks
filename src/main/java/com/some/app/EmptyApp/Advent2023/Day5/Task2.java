@@ -13,7 +13,7 @@ import java.util.List;
 public class Task2 {
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5");
 
         int from = 0;
         int to = 0;
@@ -34,27 +34,29 @@ public class Task2 {
 
 
         long answer = Long.MAX_VALUE;
-        for (int k = 0; k < seeds.size(); k++) {
-            from = 0;
-            to = 0;
-            long seed = seeds.get(k);
+        for (int k = 0; k < seeds.size(); k+=2) {
+            for (long k1 = seeds.get(k); k1 < seeds.get(k) + seeds.get(k+1); k1++){
+                from = 0;
+                to = 0;
+                long seed = k1;
 
-            for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i < list.size(); i++) {
 
-                String s = list.get(i);
-                if ((s.contains(":") && i != from) || i == list.size() - 1) {
-                    to = i;
-                    if (from != 0) {
-                        // +1 and -2 are for empty spaces
-                        if (i == list.size() - 1)
-                            to+=2;
-                        seed = followInstructions(seed, extractNumbers(list, from + 1, to - 2));
+                    String s = list.get(i);
+                    if ((s.contains(":") && i != from) || i == list.size() - 1) {
+                        to = i;
+                        if (from != 0) {
+                            // +1 and -2 are for empty spaces
+                            if (i == list.size() - 1)
+                                to+=2;
+                            seed = followInstructions(seed, extractNumbers(list, from + 1, to - 2));
+                        }
                     }
-                }
 
-                from = to;
+                    from = to;
+                }
+                answer = Math.min(answer, seed);
             }
-            answer = Math.min(answer, seed);
         }
         System.out.println(answer);
     }
@@ -68,7 +70,7 @@ public class Task2 {
 
             if (seed >= start && seed < start + quantity) {
                 seed = correspondingValue + seed - start;
-
+                break;
             }
 
         }
