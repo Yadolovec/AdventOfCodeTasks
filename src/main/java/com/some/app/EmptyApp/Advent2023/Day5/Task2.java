@@ -40,6 +40,7 @@ public class Task2 {
                 to = 0;
                 long seed = k1;
 
+                //TODO reduce loops
                 for (int i = 0; i < list.size(); i++) {
 
                     String s = list.get(i);
