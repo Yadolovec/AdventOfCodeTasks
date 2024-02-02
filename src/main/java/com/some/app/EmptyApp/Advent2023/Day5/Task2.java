@@ -3,7 +3,9 @@ package com.some.app.EmptyApp.Advent2023.Day5;
 import com.some.app.EmptyApp.util.Utils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Volodymyr Havrylets
@@ -32,30 +34,37 @@ public class Task2 {
             from = to;
         }
 
+        List<List<Long>> instructionList = new ArrayList<>(new ArrayList<>());
+        for (int i = 0; i < list.size(); i++) {
+
+            String s = list.get(i);
+            if ((s.contains(":") && i != from) || i == list.size() - 1) {
+                to = i;
+                if (from != 0) {
+                    // +1 and -2 are for empty spaces
+                    if (i == list.size() - 1)
+                        to+=2;
+                    instructionList.add(extractNumbers(list, from + 1, to - 2));
+                }
+            }
+
+            from = to;
+        }
+
+
+        //TODO extract overlaping seeds
 
         long answer = Long.MAX_VALUE;
         for (int k = 0; k < seeds.size(); k+=2) {
             for (long k1 = seeds.get(k); k1 < seeds.get(k) + seeds.get(k+1); k1++){
-                from = 0;
-                to = 0;
+
+
+
                 long seed = k1;
-
-                //TODO reduce loops
-                for (int i = 0; i < list.size(); i++) {
-
-                    String s = list.get(i);
-                    if ((s.contains(":") && i != from) || i == list.size() - 1) {
-                        to = i;
-                        if (from != 0) {
-                            // +1 and -2 are for empty spaces
-                            if (i == list.size() - 1)
-                                to+=2;
-                            seed = followInstructions(seed, extractNumbers(list, from + 1, to - 2));
-                        }
-                    }
-
-                    from = to;
+                for (List<Long> list1 : instructionList){
+                    seed = followInstructions(seed, list1);
                 }
+
                 answer = Math.min(answer, seed);
             }
         }
