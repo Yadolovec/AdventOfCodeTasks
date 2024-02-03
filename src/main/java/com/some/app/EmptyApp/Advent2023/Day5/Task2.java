@@ -1,11 +1,9 @@
 package com.some.app.EmptyApp.Advent2023.Day5;
 
 import com.some.app.EmptyApp.util.Utils;
+import org.yaml.snakeyaml.util.ArrayUtils;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Volodymyr Havrylets
@@ -15,7 +13,7 @@ import java.util.Set;
 public class Task2 {
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5t");
 
         int from = 0;
         int to = 0;
@@ -55,18 +53,38 @@ public class Task2 {
         //TODO extract overlaping seeds
 
         long answer = Long.MAX_VALUE;
-        for (int k = 0; k < seeds.size(); k+=2) {
-            for (long k1 = seeds.get(k); k1 < seeds.get(k) + seeds.get(k+1); k1++){
+//        for (int k = 0; k < seeds.size(); k+=2) {
+//            for (long k1 = seeds.get(k); k1 < seeds.get(k) + seeds.get(k+1); k1++){
+//
+//
+//
+//                long seed = k1;
+//                for (List<Long> list1 : instructionList){
+//                    seed = followInstructions(seed, list1);
+//                }
+//
+//                answer = Math.min(answer, seed);
+//            }
+//        }
+
+        List<Long> newSeeds = new ArrayList<>();
+        Map<Long, Long> skeapMap = new HashMap<>();
+        for (int i = 0; i < seeds.size(); i+=2){
+            newSeeds.add(seeds.get(i));
+            newSeeds.add(seeds.get(i) + seeds.get(i + 1));
+        }
 
 
-
-                long seed = k1;
-                for (List<Long> list1 : instructionList){
+        long lfrom = Collections.min(newSeeds);
+        long lto = Collections.max(newSeeds);
+        for (long i = lfrom; i < lto; i++){
+            long seed = i;
+                for (List<Long> list1 : instructionList) {
                     seed = followInstructions(seed, list1);
                 }
 
-                answer = Math.min(answer, seed);
-            }
+            answer = Math.min(answer, seed);
+
         }
         System.out.println(answer);
     }
@@ -83,6 +101,10 @@ public class Task2 {
                 break;
             }
 
+        }
+
+        if (seed == 0 ){
+            System.out.println("asf");
         }
 
         return seed;
