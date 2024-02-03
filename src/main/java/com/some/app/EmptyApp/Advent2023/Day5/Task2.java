@@ -1,7 +1,6 @@
 package com.some.app.EmptyApp.Advent2023.Day5;
 
 import com.some.app.EmptyApp.util.Utils;
-import org.yaml.snakeyaml.util.ArrayUtils;
 
 import java.util.*;
 
@@ -13,7 +12,7 @@ import java.util.*;
 public class Task2 {
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day5");
 
         int from = 0;
         int to = 0;
@@ -41,7 +40,7 @@ public class Task2 {
                 if (from != 0) {
                     // +1 and -2 are for empty spaces
                     if (i == list.size() - 1)
-                        to+=2;
+                        to += 2;
                     instructionList.add(extractNumbers(list, from + 1, to - 2));
                 }
             }
@@ -69,21 +68,46 @@ public class Task2 {
 
         List<Long> newSeeds = new ArrayList<>();
         Map<Long, Long> skeapMap = new HashMap<>();
-        for (int i = 0; i < seeds.size(); i+=2){
+        for (int i = 0; i < seeds.size(); i += 2) {
+            skeapMap.put(seeds.get(i), seeds.get(i) + seeds.get(i + 1));
             newSeeds.add(seeds.get(i));
-            newSeeds.add(seeds.get(i) + seeds.get(i + 1));
+        }
+
+        Collections.sort(newSeeds);
+
+        for (int i = 0; i < newSeeds.size() - 1; i++) {
+            long begin = newSeeds.get(i);
+
+            if (skeapMap.containsKey(begin)) {
+                long end = skeapMap.get(begin);
+                long nextBegin = newSeeds.get(i + 1);
+                long nextEnd = skeapMap.get(nextBegin);
+
+                if (nextBegin <= end && nextEnd <= end) {
+                    skeapMap.remove(nextBegin);
+                }
+
+                if (nextBegin <= end && nextEnd > end) {
+                    skeapMap.put(begin, nextEnd);
+                    skeapMap.remove(nextBegin);
+                }
+
+            }
         }
 
 
-        long lfrom = Collections.min(newSeeds);
-        long lto = Collections.max(newSeeds);
-        for (long i = lfrom; i < lto; i++){
-            long seed = i;
+        for (long begin : newSeeds) {
+            long lto = skeapMap.get(begin);
+
+            //lto may be lto + 1
+            for (long i = begin; i < lto; i++) {
+                long seed = i;
                 for (List<Long> list1 : instructionList) {
                     seed = followInstructions(seed, list1);
                 }
 
-            answer = Math.min(answer, seed);
+                answer = Math.min(answer, seed);
+            }
 
         }
         System.out.println(answer);
@@ -103,7 +127,7 @@ public class Task2 {
 
         }
 
-        if (seed == 0 ){
+        if (seed == 0) {
             System.out.println("asf");
         }
 
