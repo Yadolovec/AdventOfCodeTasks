@@ -10,10 +10,9 @@ import java.util.Map;
 /**
  * @author Volodymyr Havrylets
  * @link volodymyr.havrylets@embrox.com
- * @since 08.02.2024
+ * @since 10.02.2024
  **/
-public class Task1 {
-
+public class Task2 {
     static Map<String, Integer> cards = new HashMap<>();
 
     static {
@@ -26,7 +25,7 @@ public class Task1 {
         cards.put("8", 8);
         cards.put("9", 9);
         cards.put("T", 10);
-        cards.put("J", 11);
+        cards.put("J", 1);
         cards.put("Q", 12);
         cards.put("K", 13);
         cards.put("A", 14);
@@ -58,8 +57,8 @@ public class Task1 {
 
         int answer = 0;
 
-        for (int i = 0; i<players.size(); i++){
-            answer += players.get(i).getBid()*(i+1);
+        for (int i = 0; i < players.size(); i++) {
+            answer += players.get(i).getBid() * (i + 1);
         }
 
         System.out.println(answer);
@@ -125,23 +124,44 @@ public class Task1 {
                 case 2 -> {
                     int number = map.values().stream().findFirst().get();
                     if (number == 1 || number == 4) {
+                        if (map.containsKey(1)) {
+                            return 7;
+                        }
                         return 6;
                     } else {
+                        if (map.containsKey(1)) {
+                            return 7;
+                        }
                         return 5;
                     }
                 }
                 case 3 -> {
                     int number = map.values().stream().filter(x -> x >= 3).findFirst().orElse(0);
                     if (number == 0) {
+                        if (map.containsKey(1)) {
+                            if (map.get(1) == 1)
+                                return 5;
+                            if (map.get(1) == 2)
+                                return 6;
+                        }
                         return 3;
                     } else {
+                        if (map.containsKey(1)) {
+                            return 6;
+                        }
                         return 4;
                     }
                 }
                 case 4 -> {
+                    if (map.containsKey(1)) {
+                        return 3;
+                    }
                     return 2;
                 }
                 case 5 -> {
+                    if (map.containsKey(1)) {
+                        return 2;
+                    }
                     return 1;
                 }
             }
@@ -150,3 +170,5 @@ public class Task1 {
         }
     }
 }
+
+
