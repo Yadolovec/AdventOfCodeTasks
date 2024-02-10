@@ -32,7 +32,7 @@ public class Task2 {
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day7tt");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day7");
         List<Player> players = new ArrayList<>();
 
         for (String s : list) {
@@ -154,7 +154,7 @@ public class Task2 {
                 }
                 case 4 -> {
                     if (map.containsKey(1)) {
-                        return 3;
+                        return 4;
                     }
                     return 2;
                 }
