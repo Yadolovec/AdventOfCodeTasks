@@ -1,4 +1,4 @@
-package com.some.app.EmptyApp.Advent2023;
+package com.some.app.EmptyApp.Advent2023.Day9;
 
 import com.some.app.EmptyApp.util.Utils;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Volodymyr Havrylets
  * @since 15.02.2024
  **/
-public class Day9 {
+public class Task1 {
     public static void main(String[] args) {
         List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day9");
 
