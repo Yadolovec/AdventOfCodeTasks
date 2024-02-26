@@ -2,7 +2,9 @@ package com.some.app.EmptyApp.Advent2023.Day10;
 
 import com.some.app.EmptyApp.util.Utils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Volodymyr Havrylets
@@ -20,62 +22,71 @@ public class Task1 {
         for (int i = 0; i < list.size(); i++) {
             char[] charArray = list.get(i).toCharArray();
             map.add(charArray);
-            for (int j = 0; j < charArray.length; j++) {
-                if (charArray[j] == 'S') {
-                    start[0] = i;
-                    start[1] = j;
-                    break;
+            if (start[0] == -1) {
+                for (int j = 0; j < charArray.length; j++) {
+                    if (charArray[j] == 'S') {
+                        start[0] = i;
+                        start[1] = j;
+                        break;
+                    }
                 }
             }
-            if (start[0] != -1) {
-                break;
-            }
         }
-
-        int[] tile = start;
         int i = 0;
+
         int[] previousTile = start.clone();
+        int[] tileCoordinates = start.clone();
+        int[] additionalTile;
         do {
+            additionalTile = tileCoordinates.clone();
+            tileCoordinates = findNextTile(tileCoordinates, previousTile, map);
+            previousTile = additionalTile.clone();
+
             i++;
-            tile = calculateNext(tile, map, previousTile);
-            previousTile = tile.clone();
-        } while (Arrays.equals(tile, start));
+        } while (!Arrays.equals(tileCoordinates, start));
 
         System.out.println(i);
-
-
     }
 
-    public static int[] calculateNext(int[] tile, List<char[]> map, int[] previousTile) {
+    public static int[] findNextTile(int[] tileCoordinates, int[] previousTile, List<char[]> map) {
+        List<int[]> potentialNexts = findConnectable(map, tileCoordinates);
+        if (Arrays.equals(potentialNexts.get(0), previousTile)){
+            return potentialNexts.get(1);
+        } else {
+            return potentialNexts.get(0);
+        }
+    }
 
-
-        int[] toReturn = {-1, -1};
+    public static List<int[]> findConnectable(List<char[]> map, int[] tileCoordinates) {
+        List<int[]> toReturn = new ArrayList<>();
 
         int[][] potentialNextTiles = new int[4][2];
 
-        potentialNextTiles[0] = new int[]{tile[0], tile[1] + 1};
-        potentialNextTiles[1] = new int[]{tile[0], tile[1] - 1};
-        potentialNextTiles[2] = new int[]{tile[0] + 1, tile[1]};
-        potentialNextTiles[3] = new int[]{tile[0] - 1, tile[1]};
+        potentialNextTiles[0] = new int[]{tileCoordinates[0], tileCoordinates[1] + 1};
+        potentialNextTiles[1] = new int[]{tileCoordinates[0], tileCoordinates[1] - 1};
+        potentialNextTiles[2] = new int[]{tileCoordinates[0] + 1, tileCoordinates[1]};
+        potentialNextTiles[3] = new int[]{tileCoordinates[0] - 1, tileCoordinates[1]};
 
-        for (int [] nextTile : potentialNextTiles){
-            char tileName = getTileByCoordinates(map, tile);
-            char nextTileName = getTileByCoordinates(map, nextTile);
+        for (int[] array : potentialNextTiles){
+            if (array[0] < 0 || array[1] < 0 || array[0] >= map.size() || array[1] >= map.get(0).length){
+                continue;
+            }
 
-            if (isConnectable(tileName, nextTileName) && !Arrays.equals(nextTile, previousTile)){
-                toReturn = nextTile;
-                break;
+
+            //TODO additional check for position
+            if (isConnectable(tileCoordinates, array, map)){
+                toReturn.add(array);
             }
         }
 
         return toReturn;
-
-    }
-    public static char getTileByCoordinates(List<char[]> map, int[] coordinates){
-        return map.get(coordinates[0])[coordinates[1]];
     }
 
-    public static boolean isConnectable(char first, char second){
+    public static boolean isConnectable(int[] first, int[] second, List<char[]> map){
+        return isConnectable(getTileByCoordinates(map, first), getTileByCoordinates(map, second));
+    }
+
+    public static boolean isConnectable(char first, char second) {
         if (first == 'S' || second == 'S')
             return true;
 
@@ -83,7 +94,7 @@ public class Task1 {
             return false;
 
         if (first == '|')
-            return  second != '-';
+            return second != '-';
 
         if (first == '-')
             return second != '|';
@@ -91,6 +102,8 @@ public class Task1 {
         return !(first == second);
     }
 
-
+    public static char getTileByCoordinates(List<char[]> map, int[] coordinates){
+        return map.get(coordinates[0])[coordinates[1]];
+    }
 }
 
