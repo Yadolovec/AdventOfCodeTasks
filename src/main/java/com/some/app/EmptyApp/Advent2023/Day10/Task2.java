@@ -49,8 +49,8 @@ public class Task2 {
 
 
         int sum = 0;
-        boolean isInside = false;
         for (int i = 0; i < map.size(); i++) {
+            boolean isInside = false;
             for (int j = 0; j < map.get(0).length; j++) {
 
 
@@ -185,7 +185,7 @@ public class Task2 {
         return !(array[0] < 0 || array[1] < 0 || array[0] >= map.size() || array[1] >= map.get(0).length);
     }
 
-    public static class Tile{
+    public static class Tile {
 
         private int i;
         private int j;
@@ -211,7 +211,7 @@ public class Task2 {
             this.j = j;
         }
 
-        public Tile(int[] array){
+        public Tile(int[] array) {
             this.i = array[0];
             this.j = array[1];
         }
@@ -226,8 +226,8 @@ public class Task2 {
         }
 
         @Override
-        public final int hashCode(){
-            return i*j + j*j*j;
+        public final int hashCode() {
+            return i * j + j * j * j;
         }
     }
 }
