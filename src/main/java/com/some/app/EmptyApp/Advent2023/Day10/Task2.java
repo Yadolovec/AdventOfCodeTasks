@@ -3,6 +3,7 @@ package com.some.app.EmptyApp.Advent2023.Day10;
 import com.some.app.EmptyApp.util.Utils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Volodymyr Havrylets
@@ -16,7 +17,7 @@ public class Task2 {
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10");
         int[] start = {-1, -1};
 
         List<char[]> map = new ArrayList<>();
@@ -49,22 +50,40 @@ public class Task2 {
 
 
         int sum = 0;
+        Set<Tile> set1 = new HashSet<>();
+        Set<Tile> set2 = new HashSet<>();
+
         for (int i = 0; i < map.size(); i++) {
             boolean isInside = false;
             for (int j = 0; j < map.get(0).length; j++) {
-
 
                 if (way.contains(new Tile(i, j))) {
                     isInside = !isInside;
                 } else if (isInside) {
                     sum++;
-                    System.out.println(i + " " + j);
+                    set1.add(new Tile(i, j));
                 }
 
             }
         }
 
-        System.out.println(sum);
+        for (int i = 0; i < map.get(0).length; i++) {
+            boolean isInside = false;
+            for (int j = 0; j < map.size(); j++) {
+
+                if (way.contains(new Tile(i, j))) {
+                    isInside = !isInside;
+                } else if (isInside) {
+                    sum++;
+                    set2.add(new Tile(i, j));
+                }
+
+            }
+        }
+
+        set1 = set1.stream().filter(set2::contains).collect(Collectors.toSet());
+
+        System.out.println(set1.size());
 
     }
 
