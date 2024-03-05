@@ -55,6 +55,7 @@ public class Task2 {
 
         for (int i = 0; i < map.size(); i++) {
             boolean isInside = false;
+            
             for (int j = 0; j < map.get(0).length; j++) {
 
                 if (way.contains(new Tile(i, j))) {
