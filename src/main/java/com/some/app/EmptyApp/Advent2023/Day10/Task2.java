@@ -3,7 +3,6 @@ package com.some.app.EmptyApp.Advent2023.Day10;
 import com.some.app.EmptyApp.util.Utils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author Volodymyr Havrylets
@@ -17,7 +16,7 @@ public class Task2 {
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10t");
         int[] start = {-1, -1};
 
         List<char[]> map = new ArrayList<>();
@@ -50,42 +49,88 @@ public class Task2 {
 
 
         int sum = 0;
-        Set<Tile> set1 = new HashSet<>();
-        Set<Tile> set2 = new HashSet<>();
 
+        int area = 0;
         for (int i = 0; i < map.size(); i++) {
-            boolean isInside = false;
-            
+
             for (int j = 0; j < map.get(0).length; j++) {
 
-                if (way.contains(new Tile(i, j))) {
-                    isInside = !isInside;
-                } else if (isInside) {
-                    sum++;
-                    set1.add(new Tile(i, j));
+                if (isInside(new Tile(i, j), map, way)) {
+                    area++;
                 }
-
             }
         }
 
-        for (int i = 0; i < map.get(0).length; i++) {
-            boolean isInside = false;
-            for (int j = 0; j < map.size(); j++) {
+        System.out.println(area);
 
-                if (way.contains(new Tile(i, j))) {
-                    isInside = !isInside;
-                } else if (isInside) {
-                    sum++;
-                    set2.add(new Tile(i, j));
+    }
+
+    public static boolean isInside(Tile tile, List<char[]> map, Set<Tile> way) {
+
+        if (way.contains(tile)) {
+            return false;
+        }
+
+        int[] horizontalBeforeAndAfter = checkBeforeAndAfter(way, map, tile, true);
+        int[] verticalBeforeAndAfter = checkBeforeAndAfter(way, map, tile, false);
+
+        return (horizontalBeforeAndAfter[0] != horizontalBeforeAndAfter[1]) || (verticalBeforeAndAfter[0] != verticalBeforeAndAfter[1]);
+    }
+
+    public static int[] checkBeforeAndAfter(Set<Tile> way, List<char[]> map, Tile tile, boolean isHorizontal){
+        int[] toReturn = {0, 0};
+        int counter = 0;
+        Boolean properSided = null;
+        int to = isHorizontal ? map.size() : map.get(0).length;
+        for (int i = 0; i < to; i++) {
+            Tile comparedTile = isHorizontal ? new Tile(i, tile.getJ()) : new Tile(tile.getI(), i);
+            if (way.contains(comparedTile) && counter == 0) {
+                properSided = isHorizontal ? isLeftSided(way, map, comparedTile, i) : isUpSided(way, map, comparedTile, i);
+            }
+
+            if (way.contains(comparedTile) && i < map.size() - 1) {
+                counter++;
+            } else if (counter > 1){
+                counter = 0;
+                Boolean isEndProperSided = isHorizontal ? isLeftSided(way, map, comparedTile, i) : isUpSided(way, map, comparedTile, i);
+                if (properSided != null && isEndProperSided != null){
+                    if (properSided == isEndProperSided){
+                        counter = 1;
+                    }
                 }
+            }
 
+            if (!way.contains(comparedTile) && counter == 1) {
+                counter = 0;
+                if (comparedTile.getJ() < tile.getJ()) {
+                    toReturn[0]++;
+                } else {
+                    toReturn[1]++;
+                }
             }
         }
 
-        set1 = set1.stream().filter(set2::contains).collect(Collectors.toSet());
+        return toReturn;
+    }
 
-        System.out.println(set1.size());
+    public static Boolean isLeftSided(Set<Tile> way, List<char[]> map, Tile tile, int i){
+        if (tile.getJ() + 1 < map.get(0).length && way.contains(new Tile(i, tile.getJ() + 1)))
+            return false;
 
+        if (tile.getJ() - 1 >= 0 && way.contains(new Tile(i, tile.getJ() - 1)))
+            return true;
+
+        return null;
+    }
+
+    public static Boolean isUpSided(Set<Tile> way, List<char[]> map, Tile tile, int i){
+        if (tile.getI() + 1 < map.size() && way.contains(new Tile(tile.getI() + 1, i)))
+            return false;
+
+        if (tile.getI() - 1 >= 0 && way.contains(new Tile(tile.getI() - 1, i)))
+            return true;
+
+        return null;
     }
 
     public static int[] findNextTile(int[] tileCoordinates, List<char[]> map) {
