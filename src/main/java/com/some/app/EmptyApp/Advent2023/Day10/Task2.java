@@ -66,71 +66,80 @@ public class Task2 {
     }
 
     public static boolean isInside(Tile tile, List<char[]> map, Set<Tile> way) {
-
-        if (way.contains(tile)) {
+        if (way.contains(tile))
             return false;
-        }
 
-        int[] horizontalBeforeAndAfter = checkBeforeAndAfter(way, map, tile, true);
-        int[] verticalBeforeAndAfter = checkBeforeAndAfter(way, map, tile, false);
+        int[] beforeAfterHorizontal = {0, 0};
+        int[] beforeAfterVertical = {0, 0};
 
-        return (horizontalBeforeAndAfter[0] != horizontalBeforeAndAfter[1]) || (verticalBeforeAndAfter[0] != verticalBeforeAndAfter[1]);
-    }
+        char startCheck = ' ';
 
-    public static int[] checkBeforeAndAfter(Set<Tile> way, List<char[]> map, Tile tile, boolean isHorizontal){
-        int[] toReturn = {0, 0};
-        int counter = 0;
-        Boolean properSided = null;
-        int to = isHorizontal ? map.size() : map.get(0).length;
-        for (int i = 0; i < to; i++) {
-            Tile comparedTile = isHorizontal ? new Tile(i, tile.getJ()) : new Tile(tile.getI(), i);
-            if (way.contains(comparedTile) && counter == 0) {
-                properSided = isHorizontal ? isLeftSided(way, map, comparedTile, i) : isUpSided(way, map, comparedTile, i);
-            }
+        for (int i = 0; i < map.size(); i++) {
+            Tile testedTile = new Tile(i, tile.getJ());
+            char testedTileName = getTileByCoordinates(map, new int[]{testedTile.getI(), testedTile.getJ()});
 
-            if (way.contains(comparedTile) && i < map.size() - 1) {
-                counter++;
-            } else if (counter > 1){
-                counter = 0;
-                Boolean isEndProperSided = isHorizontal ? isLeftSided(way, map, comparedTile, i) : isUpSided(way, map, comparedTile, i);
-                if (properSided != null && isEndProperSided != null){
-                    if (properSided == isEndProperSided){
-                        counter = 1;
+            if (way.contains(testedTile)) {
+
+                if (testedTileName != '-') {
+                    if (startCheck == ' ') {
+                        startCheck = testedTileName;
+                        continue;
+                    } else {
+
+                        if (lookSameDirection(startCheck, testedTileName) != null) {
+                            startCheck = ' ';
+                            if (lookSameDirection(startCheck, testedTileName)) {
+                                continue;
+                        }
+//                        if (startCheck == '7'){
+//                            if (testedTileName == 'J'){
+//                                startCheck = ' ';
+//                                continue;
+//                            }
+//                            if (testedTileName == 'L'){
+//                                startCheck = ' ';
+//                            }
+//                        }
+//
+//                        if (startCheck == 'F'){
+//                            if (testedTileName == 'L'){
+//                                startCheck = ' ';
+//                                continue;
+//                            }
+//                            if (testedTileName == 'J'){
+//                                startCheck = ' ';
+//                            }
+//                        }
+
                     }
-                }
-            }
 
-            if (!way.contains(comparedTile) && counter == 1) {
-                counter = 0;
-                if (comparedTile.getJ() < tile.getJ()) {
-                    toReturn[0]++;
+                }
+
+
+                if (i < tile.getI()) {
+                    beforeAfterHorizontal[0]++;
                 } else {
-                    toReturn[1]++;
+                    beforeAfterHorizontal[1]++;
                 }
             }
         }
 
-        return toReturn;
-    }
+        for (int j = 0; j < map.get(0).length; j++) {
+            Tile testedTile = new Tile(tile.getI(), j);
+            if (way.contains(testedTile)) {
+                if (j < tile.getJ()) {
+                    beforeAfterVertical[0]++;
+                } else {
+                    beforeAfterVertical[1]++;
+                }
+            }
+        }
 
-    public static Boolean isLeftSided(Set<Tile> way, List<char[]> map, Tile tile, int i){
-        if (tile.getJ() + 1 < map.get(0).length && way.contains(new Tile(i, tile.getJ() + 1)))
-            return false;
+        if (tile.getI() == 6 && tile.getJ() == 3) {
+            System.out.println(" ");
+        }
+        return beforeAfterVertical[1] != 88;
 
-        if (tile.getJ() - 1 >= 0 && way.contains(new Tile(i, tile.getJ() - 1)))
-            return true;
-
-        return null;
-    }
-
-    public static Boolean isUpSided(Set<Tile> way, List<char[]> map, Tile tile, int i){
-        if (tile.getI() + 1 < map.size() && way.contains(new Tile(tile.getI() + 1, i)))
-            return false;
-
-        if (tile.getI() - 1 >= 0 && way.contains(new Tile(tile.getI() - 1, i)))
-            return true;
-
-        return null;
     }
 
     public static int[] findNextTile(int[] tileCoordinates, List<char[]> map) {
