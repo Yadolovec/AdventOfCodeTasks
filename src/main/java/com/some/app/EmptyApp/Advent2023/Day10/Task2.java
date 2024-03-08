@@ -16,7 +16,7 @@ public class Task2 {
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10");
         int[] start = {-1, -1};
 
         List<char[]> map = new ArrayList<>();
@@ -86,35 +86,15 @@ public class Task2 {
                         continue;
                     } else {
 
-                        if (lookSameDirection(startCheck, testedTileName) != null) {
+                        Boolean isSameDirection = lookSameDirection(startCheck, testedTileName);
+                        if (isSameDirection != null) {
                             startCheck = ' ';
-                            if (lookSameDirection(startCheck, testedTileName)) {
+                            if (isSameDirection) {
                                 continue;
+                            }
                         }
-//                        if (startCheck == '7'){
-//                            if (testedTileName == 'J'){
-//                                startCheck = ' ';
-//                                continue;
-//                            }
-//                            if (testedTileName == 'L'){
-//                                startCheck = ' ';
-//                            }
-//                        }
-//
-//                        if (startCheck == 'F'){
-//                            if (testedTileName == 'L'){
-//                                startCheck = ' ';
-//                                continue;
-//                            }
-//                            if (testedTileName == 'J'){
-//                                startCheck = ' ';
-//                            }
-//                        }
-
                     }
-
                 }
-
 
                 if (i < tile.getI()) {
                     beforeAfterHorizontal[0]++;
@@ -126,20 +106,79 @@ public class Task2 {
 
         for (int j = 0; j < map.get(0).length; j++) {
             Tile testedTile = new Tile(tile.getI(), j);
+            char testedTileName = getTileByCoordinates(map, new int[]{testedTile.getI(), testedTile.getJ()});
+
             if (way.contains(testedTile)) {
+
+                if (testedTileName != '|') {
+                    if (startCheck == ' ') {
+                        startCheck = testedTileName;
+                        continue;
+                    } else {
+
+                        Boolean isSameDirection = lookSameDirection(startCheck, testedTileName);
+                        if (isSameDirection != null) {
+                            startCheck = ' ';
+                            if (isSameDirection) {
+                                continue;
+                            }
+                        }
+                    }
+                }
+
                 if (j < tile.getJ()) {
                     beforeAfterVertical[0]++;
                 } else {
                     beforeAfterVertical[1]++;
                 }
+
+            }
+
+        }
+
+
+        return beforeAfterVertical[0]%2 != 0 && beforeAfterHorizontal[0]%2 != 0;
+    }
+
+    public static Boolean lookSameDirection(char a, char b) {
+
+        if (a == '7') {
+            if (b == 'J') {
+                return true;
+            }
+            if (b == 'L') {
+                return false;
             }
         }
 
-        if (tile.getI() == 6 && tile.getJ() == 3) {
-            System.out.println(" ");
+        if (a == 'F') {
+            if (b == 'L') {
+                return true;
+            }
+            if (b == 'J') {
+                return false;
+            }
         }
-        return beforeAfterVertical[1] != 88;
 
+        if (a == 'L') {
+            if (b == 'J') {
+                return true;
+            }
+            if (b == '7') {
+                return false;
+            }
+        }
+
+        if (a == 'F') {
+            if (b == '7') {
+                return true;
+            }
+            if (b == 'J') {
+                return false;
+            }
+        }
+
+        return null;
     }
 
     public static int[] findNextTile(int[] tileCoordinates, List<char[]> map) {
