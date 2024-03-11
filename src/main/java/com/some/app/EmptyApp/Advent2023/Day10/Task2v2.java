@@ -6,9 +6,9 @@ import java.util.*;
 
 /**
  * @author Volodymyr Havrylets
- * @since 28.02.2024
+ * @since 11.03.2024
  **/
-public class Task2 {
+public class Task2v2 {
     static Task1.Direction directionToIgnore = Task1.Direction.NONE;
 
     enum Direction {
@@ -16,7 +16,7 @@ public class Task2 {
     }
 
     public static void main(String[] args) {
-        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10t");
+        List<String> list = Utils.getListFromText("src/main/resources/Res2023/Day10");
         int[] start = {-1, -1};
 
         List<char[]> map = new ArrayList<>();
@@ -35,30 +35,49 @@ public class Task2 {
             }
         }
 
-        int[] previousTile = start.clone();
         int[] tileCoordinates = start.clone();
-        int[] additionalTile;
-
 
         Set<Tile> way = new HashSet<>();
         do {
-            way.add(new Tile(tileCoordinates));
+            way.add(new Tile(tileCoordinates, getTileByCoordinates(map, tileCoordinates)));
             tileCoordinates = findNextTile(tileCoordinates, map);
 
         } while (!Arrays.equals(tileCoordinates, start));
-
 
         int sum = 0;
 
         int area = 0;
         for (int i = 0; i < map.size(); i++) {
-
+            Tile tile;
+            char previousTileName = ' ';
+            boolean isInside = false;
             for (int j = 0; j < map.get(0).length; j++) {
+                tile = new Tile(new int[]{i, j}, getTileByCoordinates(map, new int[]{i, j}));
+                char tileName = tile.getTileName();
+                if (way.contains(tile)) {
+                    if (tileName == '|') {
+                        isInside = !isInside;
+                    }
+                    if (previousTileName == ' ') {
+                        if (tileName == 'L' || tileName == 'F')
+                            previousTileName = tile.getTileName();
+                    } else {
+                        if ((previousTileName == 'F' && tileName == 'J') || (previousTileName == 'L' && tileName == '7')){
+                            isInside = !isInside;
+                        }
+                        if (tileName == '7' || tileName == 'J'){
+                            previousTileName = ' ';
+                        }
+                    }
+                    continue;
+                }
 
-                if (isInside(new Tile(i, j), map, way)) {
+                if (isInside) {
                     area++;
                 }
+                System.out.print(tileName + "|");
             }
+                System.out.println();
         }
 
         System.out.println(area);
@@ -137,7 +156,7 @@ public class Task2 {
         }
 
 
-        return beforeAfterVertical[0]%2 != 0 && beforeAfterHorizontal[0]%2 != 0;
+        return beforeAfterVertical[0] % 2 != 0 && beforeAfterHorizontal[0] % 2 != 0;
     }
 
     public static Boolean lookSameDirection(char a, char b) {
@@ -302,6 +321,15 @@ public class Task2 {
 
         private int i;
         private int j;
+        private char tileName;
+
+        public char getTileName() {
+            return tileName;
+        }
+
+        public void setTileName(char tileName) {
+            this.tileName = tileName;
+        }
 
         public int getI() {
             return i;
@@ -324,10 +352,12 @@ public class Task2 {
             this.j = j;
         }
 
-        public Tile(int[] array) {
+        public Tile(int[] array, char tileName) {
+            this.tileName = tileName;
             this.i = array[0];
             this.j = array[1];
         }
+
 
         @Override
         public boolean equals(Object o) {
